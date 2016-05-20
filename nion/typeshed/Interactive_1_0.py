@@ -1,7 +1,6 @@
 import numpy
 
 class Interactive:
-    version = "~1.0"
     @property
     def cancelled(self) -> bool:
         """Return True if the interactive script has been cancelled."""
@@ -28,3 +27,5 @@ class Interactive:
     def confirm_yes_no(self, prompt: str) -> bool: ...
     def confirm(self, prompt: str, accepted_text: str, rejected_text: str) -> bool: ...
     def alert(self, prompt: str, button_label: str = None) -> None: ...
+
+version = "~1.0"

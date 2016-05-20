@@ -586,7 +586,6 @@ class Application:
 
 
 class API:
-    version = "~1.0"
     """An interface to Nion Swift.
 
     This class cannot be instantiated directly. Use :samp:`api_broker.get_api(version)` to get access an instance of
@@ -710,3 +709,5 @@ class API:
         Scriptable: Yes
         """
         ...
+
+version = "~1.0"

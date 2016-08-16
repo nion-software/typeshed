@@ -109,8 +109,8 @@ class HardwareSource:
         :type frame_parameters: :py:class:`FrameParameters`
         :param channels_enabled: The enabled channels for the record. Pass None for defaults.
         :type channels_enabled: Array of booleans.
-        :return: The :py:class:`ViewTask` object.
-        :rtype: :py:class:`ViewTask`
+        :return: The :py:class:`RecordTask` object.
+        :rtype: :py:class:`RecordTask`
 
         Callers should call close on the returned task when finished.
 

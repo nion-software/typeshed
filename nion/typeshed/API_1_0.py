@@ -420,6 +420,21 @@ class Library:
     def data_ref_for_data_item(self, data_item: DataItem):
         ...
 
+    def get_data_item_for_hardware_source(self, hardware_source, channel_id: str=None, processor_id: str=None, create_if_needed: type=False) -> DataItem:
+        """Get the data item associated with a hardware source and (optional) channel id. Optionally reate if missing.
+
+        :param hardware_source: The hardware_source.
+        :param channel_id: The (optional) channel id.
+        :param processor_id: The (optional) processor id for the channel.
+        :param create_if_needed: Whether to create a new data item if none is found.
+        :return: The associate data item. May be None.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
     def get_or_create_data_group(self, title: str) -> DataGroup:
         """Get (or create) a data group.
 

@@ -33,7 +33,7 @@ class RecordTask:
         ...
 
     @property
-    def is_finished(self) -> type:
+    def is_finished(self) -> bool:
         """Return a boolean indicating whether the task is finished.
 
         .. versionadded:: 1.0
@@ -100,7 +100,7 @@ class HardwareSource:
     def close(self) -> None:
         ...
 
-    def create_record_task(self, frame_parameters: dict=None, channels_enabled: List[type]=None) -> RecordTask:
+    def create_record_task(self, frame_parameters: dict=None, channels_enabled: List[bool]=None) -> RecordTask:
         """Create a record task for this hardware source.
 
         .. versionadded:: 1.0
@@ -118,7 +118,7 @@ class HardwareSource:
         """
         ...
 
-    def create_view_task(self, frame_parameters: dict=None, channels_enabled: List[type]=None) -> ViewTask:
+    def create_view_task(self, frame_parameters: dict=None, channels_enabled: List[bool]=None) -> ViewTask:
         """Create a view task for this hardware source.
 
         .. versionadded:: 1.0
@@ -175,10 +175,10 @@ class HardwareSource:
         """
         ...
 
-    def grab_next_to_start(self, frame_parameters: dict=None, channels_enabled: List[type]=None, timeout: float=None) -> DataAndMetadata.DataAndMetadata:
+    def grab_next_to_start(self, frame_parameters: dict=None, channels_enabled: List[bool]=None, timeout: float=None) -> DataAndMetadata.DataAndMetadata:
         ...
 
-    def record(self, frame_parameters: dict=None, channels_enabled: List[type]=None, timeout: float=None) -> List[DataAndMetadata.DataAndMetadata]:
+    def record(self, frame_parameters: dict=None, channels_enabled: List[bool]=None, timeout: float=None) -> List[DataAndMetadata.DataAndMetadata]:
         """Record data and return a list of data_and_metadata objects.
 
         .. versionadded:: 1.0
@@ -214,21 +214,21 @@ class HardwareSource:
     def set_property_as_str(self, name, value):
         ...
 
-    def start_playing(self, frame_parameters: dict=None, channels_enabled: List[type]=None) -> None:
+    def start_playing(self, frame_parameters: dict=None, channels_enabled: List[bool]=None) -> None:
         ...
 
-    def start_recording(self, frame_parameters: dict=None, channels_enabled: List[type]=None):
+    def start_recording(self, frame_parameters: dict=None, channels_enabled: List[bool]=None):
         ...
 
     def stop_playing(self) -> None:
         ...
 
     @property
-    def is_playing(self) -> type:
+    def is_playing(self) -> bool:
         ...
 
     @property
-    def is_recording(self) -> type:
+    def is_recording(self) -> bool:
         ...
 
     @property
@@ -238,3 +238,5 @@ class HardwareSource:
     @profile_index.setter
     def profile_index(self, value: int) -> None:
         ...
+
+version = "~1.0"

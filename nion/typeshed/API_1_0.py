@@ -280,7 +280,7 @@ class Instrument:
     def get_control_state(self, name: str) -> str:
         ...
 
-    def get_property_as_bool(self, name: str) -> type:
+    def get_property_as_bool(self, name: str) -> bool:
         ...
 
     def get_property_as_float(self, name: str) -> float:
@@ -331,7 +331,7 @@ class Instrument:
         """
         ...
 
-    def set_property_as_bool(self, name: str, value: type) -> None:
+    def set_property_as_bool(self, name: str, value: bool) -> None:
         ...
 
     def set_property_as_float(self, name: str, value: float) -> None:
@@ -420,7 +420,7 @@ class Library:
     def data_ref_for_data_item(self, data_item: DataItem):
         ...
 
-    def get_data_item_for_hardware_source(self, hardware_source, channel_id: str=None, processor_id: str=None, create_if_needed: type=False) -> DataItem:
+    def get_data_item_for_hardware_source(self, hardware_source, channel_id: str=None, processor_id: str=None, create_if_needed: bool=False) -> DataItem:
         """Get the data item associated with a hardware source and (optional) channel id. Optionally reate if missing.
 
         :param hardware_source: The hardware_source.

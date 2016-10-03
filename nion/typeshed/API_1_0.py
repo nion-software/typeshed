@@ -1,5 +1,5 @@
 import numpy
-from typing import List
+import typing
 from nion.data import Calibration
 from nion.data import DataAndMetadata
 from nion.utils import Geometry
@@ -81,7 +81,7 @@ class DataItem:
         """
         ...
 
-    def set_dimensional_calibrations(self, dimensional_calibrations: List[Calibration.Calibration]) -> None:
+    def set_dimensional_calibrations(self, dimensional_calibrations: typing.List[Calibration.Calibration]) -> None:
         """Set the dimensional calibrations.
 
         :param dimensional_calibrations: A list of calibrations, must match the dimensions of the data.
@@ -126,6 +126,18 @@ class DataItem:
         """
         ...
 
+    @data.setter
+    def data(self, value: numpy.ndarray) -> None:
+        """Set the data.
+
+        :param data: A numpy ndarray.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
     @property
     def data_and_metadata(self) -> DataAndMetadata.DataAndMetadata:
         """Return the data and metadata object.
@@ -137,7 +149,7 @@ class DataItem:
         ...
 
     @property
-    def dimensional_calibrations(self) -> List[Calibration.Calibration]:
+    def dimensional_calibrations(self) -> typing.List[Calibration.Calibration]:
         """Return a copy of the list of dimensional calibrations.
 
         .. versionadded:: 1.0
@@ -148,6 +160,10 @@ class DataItem:
 
     @property
     def display(self) -> "Display":
+        ...
+
+    @property
+    def display_xdata(self) -> DataAndMetadata.DataAndMetadata:
         ...
 
     @property
@@ -171,7 +187,15 @@ class DataItem:
         ...
 
     @property
-    def regions(self) -> List[Region]:
+    def regions(self) -> typing.List[Region]:
+        ...
+
+    @property
+    def xdata(self) -> DataAndMetadata.DataAndMetadata:
+        ...
+
+    @xdata.setter
+    def xdata(self, value: DataAndMetadata.DataAndMetadata) -> None:
         ...
 
 
@@ -204,12 +228,40 @@ class DisplayPanel:
 
 class Graphic:
 
+    def get_property(self, property: str):
+        ...
+
+    def mask_xdata_with_shape(self, shape: typing.Sequence[int]) -> DataAndMetadata.DataAndMetadata:
+        ...
+
+    def set_property(self, property: str, value):
+        ...
+
+    @property
+    def graphic_id(self) -> str:
+        ...
+
+    @graphic_id.setter
+    def graphic_id(self, value: str) -> None:
+        ...
+
+    @property
+    def label(self) -> str:
+        ...
+
+    @label.setter
+    def label(self, value: str) -> None:
+        ...
+
     @property
     def region(self) -> Region:
         ...
 
 
 class Display:
+
+    def get_graphic_by_id(self, graphic_id: str) -> Graphic:
+        ...
 
     @property
     def data_item(self) -> DataItem:
@@ -224,11 +276,11 @@ class Display:
         ...
 
     @property
-    def graphics(self) -> List[Graphic]:
+    def graphics(self) -> typing.List[Graphic]:
         ...
 
     @property
-    def selected_graphics(self) -> List[Graphic]:
+    def selected_graphics(self) -> typing.List[Graphic]:
         ...
 
 
@@ -420,17 +472,38 @@ class Library:
     def data_ref_for_data_item(self, data_item: DataItem):
         ...
 
+    def get_data_item_by_uuid(self, data_item_uuid: type) -> DataItem:
+        """Get the data item with the given UUID.
+
+        .. versionadded:: 1.0
+
+        Status: Provisional
+        Scriptable: Yes
+        """
+        ...
+
     def get_data_item_for_hardware_source(self, hardware_source, channel_id: str=None, processor_id: str=None, create_if_needed: bool=False) -> DataItem:
-        """Get the data item associated with a hardware source and (optional) channel id. Optionally reate if missing.
+        """Get the data item associated with hardware source and (optional) channel id and processor_id. Optionally create if missing.
 
         :param hardware_source: The hardware_source.
         :param channel_id: The (optional) channel id.
         :param processor_id: The (optional) processor id for the channel.
         :param create_if_needed: Whether to create a new data item if none is found.
-        :return: The associate data item. May be None.
+        :return: The associated data item. May be None.
 
         .. versionadded:: 1.0
 
+        Status: Provisional
+        Scriptable: Yes
+        """
+        ...
+
+    def get_graphic_by_uuid(self, graphic_uuid: type) -> Graphic:
+        """Get the graphic with the given UUID.
+
+        .. versionadded:: 1.0
+
+        Status: Provisional
         Scriptable: Yes
         """
         ...
@@ -461,7 +534,7 @@ class Library:
         ...
 
     @property
-    def data_items(self) -> List[DataItem]:
+    def data_items(self) -> typing.List[DataItem]:
         """Return the list of data items.
 
         :return: The list of :py:class:`nion.swift.Facade.DataItem` objects.
@@ -509,7 +582,7 @@ class DocumentController:
         ...
 
     def display_data_item(self, data_item: DataItem, source_display_panel=None, source_data_item=None):
-        """Display a new data item.
+        """Display a new data item and gives it keyboard focus. Uses existing display if it is already displayed.
 
         .. versionadded:: 1.0
 
@@ -549,7 +622,7 @@ class DocumentController:
         ...
 
     @property
-    def all_display_panels(self) -> List[DisplayPanel]:
+    def all_display_panels(self) -> typing.List[DisplayPanel]:
         """Return the list of display panels currently visible.
 
         .. versionadded:: 1.0
@@ -580,7 +653,7 @@ class DocumentController:
 class Application:
 
     @property
-    def document_controllers(self) -> List[DocumentController]:
+    def document_controllers(self) -> typing.List[DocumentController]:
         """Return the document controllers.
 
         .. versionadded:: 1.0
@@ -624,7 +697,7 @@ class API:
         """
         ...
 
-    def create_data_and_metadata(self, data: numpy.ndarray, intensity_calibration: Calibration.Calibration=None, dimensional_calibrations: List[Calibration.Calibration]=None, metadata: dict=None, timestamp: str=None) -> DataAndMetadata.DataAndMetadata:
+    def create_data_and_metadata(self, data: numpy.ndarray, intensity_calibration: Calibration.Calibration=None, dimensional_calibrations: typing.List[Calibration.Calibration]=None, metadata: dict=None, timestamp: str=None) -> DataAndMetadata.DataAndMetadata:
         """Create a data_and_metadata object from data.
 
         :param data: an ndarray of data.
@@ -639,7 +712,7 @@ class API:
         """
         ...
 
-    def create_data_and_metadata_from_data(self, data: numpy.ndarray, intensity_calibration: Calibration.Calibration=None, dimensional_calibrations: List[Calibration.Calibration]=None, metadata: dict=None, timestamp: str=None) -> DataAndMetadata.DataAndMetadata:
+    def create_data_and_metadata_from_data(self, data: numpy.ndarray, intensity_calibration: Calibration.Calibration=None, dimensional_calibrations: typing.List[Calibration.Calibration]=None, metadata: dict=None, timestamp: str=None) -> DataAndMetadata.DataAndMetadata:
         """Create a data_and_metadata object from data.
 
         .. versionadded:: 1.0
@@ -684,10 +757,10 @@ class API:
         """
         ...
 
-    def get_all_hardware_source_ids(self) -> List[str]:
+    def get_all_hardware_source_ids(self) -> typing.List[str]:
         ...
 
-    def get_all_instrument_ids(self) -> List[str]:
+    def get_all_instrument_ids(self) -> typing.List[str]:
         ...
 
     def get_hardware_source_by_id(self, hardware_source_id: str, version: str):

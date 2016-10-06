@@ -327,10 +327,9 @@ class DataItem:
     def data_and_metadata(self) -> DataAndMetadata.DataAndMetadata:
         """Return the extended data.
 
-        Deprecated. Use xdata instead.
-
-        .. deprecated:: 1.1
         .. versionadded:: 1.0
+        .. deprecated:: 1.1
+           Use :py:attr:`~nion.swift.Facade.DataItem.xdata` instead.
 
         Scriptable: Yes
         """
@@ -396,10 +395,9 @@ class DataItem:
     def regions(self) -> typing.List[Graphic]:
         """Return the graphics attached to this data item.
 
-        Deprecated. Use graphics accessor instead.
-
-        .. deprecated:: 1.1
         .. versionadded:: 1.0
+        .. deprecated:: 1.1
+           Use :py:attr:`~nion.swift.Facade.DataItem.graphics` instead.
 
         Scriptable: Yes
         """
@@ -629,14 +627,14 @@ class Library:
         ...
 
 
-class DocumentController:
+class DocumentWindow:
 
     def add_data(self, data: numpy.ndarray, title: str=None) -> DataItem:
         """Create a data item in the library from data.
 
         .. versionadded:: 1.0
         .. deprecated:: 1.1
-           Use :py:meth:`nion.swift.Facade.Library.create_data_item_from_data` instead.
+           Use :py:meth:`~nion.swift.Facade.Library.create_data_item_from_data` instead.
 
         Scriptable: No
         """
@@ -647,7 +645,7 @@ class DocumentController:
 
         .. versionadded:: 1.0
         .. deprecated:: 1.1
-           Use library.create_data_item_from_data instead.
+           Use :py:meth:`~nion.swift.Facade.Library.create_data_item_from_data` instead.
 
         Scriptable: No
         """
@@ -658,7 +656,7 @@ class DocumentController:
 
         .. versionadded:: 1.0
         .. deprecated:: 1.1
-           Use library.create_data_item_from_data_and_metadata instead.
+           Use :py:meth:`~nion.swift.Facade.Library.create_data_item_from_data_and_metadata` instead.
 
         Scriptable: No
         """
@@ -689,7 +687,7 @@ class DocumentController:
 
         .. versionadded:: 1.0
         .. deprecated:: 1.1
-           Use library.create_data_item_from_data instead.
+           Use :py:meth:`~nion.swift.Facade.Library.create_data_item_from_data` instead.
 
         Scriptable: No
         """
@@ -736,8 +734,20 @@ class DocumentController:
 class Application:
 
     @property
-    def document_controllers(self) -> typing.List[DocumentController]:
+    def document_controllers(self) -> typing.List[DocumentWindow]:
         """Return the document controllers.
+
+        .. versionadded:: 1.0
+        .. deprecated:: 1.1
+           Use :py:attr:`~nion.swift.Facade.Application.document_windows` instead.
+
+        Scriptable: Yes
+        """
+        ...
+
+    @property
+    def document_windows(self) -> typing.List[DocumentWindow]:
+        """Return the document windows.
 
         .. versionadded:: 1.0
 
@@ -800,7 +810,7 @@ class API:
 
         .. versionadded:: 1.0
         .. deprecated:: 1.1
-           Use api.create_data_and_metadata instead.
+           Use :py:meth:`~nion.swift.Facade.DataItem.create_data_and_metadata` instead.
 
         Scriptable: No
         """
@@ -855,7 +865,7 @@ class API:
         """
         ...
 
-    def get_instrument_by_id(self, instrument_id: str, version: str) -> Instrument:
+    def get_instrument_by_id(self, instrument_id: str, version: str):
         ...
 
     def queue_task(self, fn) -> None:

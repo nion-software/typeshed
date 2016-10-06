@@ -5,47 +5,13 @@ from nion.data import DataAndMetadata
 from nion.utils import Geometry
 
 
-class Region:
+class Graphic:
 
     def get_property(self, property: str):
         ...
 
-    def set_property(self, property: str, value):
-        ...
-
-    @property
-    def label(self) -> str:
-        ...
-
-    @label.setter
-    def label(self, value: str) -> None:
-        ...
-
-    @property
-    def type(self) -> str:
-        ...
-
-
-class DataItem:
-
-    def add_channel_region(self, position: float) -> Region:
-        ...
-
-    def add_ellipse_region(self, center_y: float, center_x: float, height: float, width: float) -> Region:
-        ...
-
-    def add_interval_region(self, start: float, end: float) -> Region:
-        ...
-
-    def add_line_region(self, start_y: float, start_x: float, end_y: float, end_x: float) -> Region:
-        ...
-
-    def add_point_region(self, y: float, x: float) -> Region:
-        """Add a point region to the data item.
-
-        :param x: The x coordinate, in relative units [0.0, 1.0]
-        :param y: The y coordinate, in relative units [0.0, 1.0]
-        :return: The :py:class:`nion.swift.Facade.Region` object that was added.
+    def mask_xdata_with_shape(self, shape: typing.Sequence[int]) -> DataAndMetadata.DataAndMetadata:
+        """Return the mask created by this graphic as extended data.
 
         .. versionadded:: 1.0
 
@@ -53,10 +19,229 @@ class DataItem:
         """
         ...
 
-    def add_rectangle_region(self, center_y: float, center_x: float, height: float, width: float) -> Region:
+    def set_property(self, property: str, value):
         ...
 
-    def remove_region(self, region: Region) -> None:
+    @property
+    def angle(self) -> float:
+        """Return the angle (radians) property."""
+        ...
+
+    @angle.setter
+    def angle(self, value: float) -> None:
+        """Set the angle (radians) property."""
+        ...
+
+    @property
+    def bounds(self) -> typing.Tuple[typing.Tuple[float, float], typing.Tuple[float, float]]:
+        """Return the bounds property in relative coordinates.
+
+        Bounds is a tuple ((top, left), (height, width))"""
+        ...
+
+    @bounds.setter
+    def bounds(self, value: typing.Tuple[typing.Tuple[float, float], typing.Tuple[float, float]]) -> None:
+        """Set the bounds property in relative coordinates.
+
+        Bounds is a tuple ((top, left), (height, width))"""
+        ...
+
+    @property
+    def center(self) -> typing.Tuple[float, float]:
+        """Return the center property in relative coordinates.
+
+        Center is a tuple (y, x)."""
+        ...
+
+    @center.setter
+    def center(self, value) -> None:
+        """Set the center in relative coordinates.
+
+        Center is a tuple (y, x)."""
+        ...
+
+    @property
+    def end(self) -> typing.Union[float, typing.Tuple[float, float]]:
+        """Return the end property in relative coordinates.
+
+        End may be a float when graphic is an Interval or a tuple (y, x) when graphic is a Line."""
+        ...
+
+    @end.setter
+    def end(self, value: typing.Union[float, typing.Tuple[float, float]]) -> None:
+        """Set the end property in relative coordinates.
+
+        End may be a float when graphic is an Interval or a tuple (y, x) when graphic is a Line."""
+        ...
+
+    @property
+    def graphic_id(self) -> str:
+        """Return the graphic identifier.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    @graphic_id.setter
+    def graphic_id(self, value: str) -> None:
+        """Set the graphic identifier.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    @property
+    def graphic_type(self) -> str:
+        """Return the type of this graphic.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    @property
+    def interval(self) -> typing.Tuple[float, float]:
+        """Return the interval property in relative coordinates.
+
+        Interval is a tuple of floats (start, end)."""
+        ...
+
+    @interval.setter
+    def interval(self, value: typing.Tuple[float, float]) -> None:
+        """Set the interval property in relative coordinates.
+
+        Interval is a tuple of floats (start, end)."""
+        ...
+
+    @property
+    def label(self) -> str:
+        """Return the graphic label.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    @label.setter
+    def label(self, value: str) -> None:
+        """Set the graphic label.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    @property
+    def position(self) -> typing.Tuple[float, float]:
+        """Return the position property in relative coordinates.
+
+        Position is a tuple of floats (y, x)."""
+        ...
+
+    @position.setter
+    def position(self, value: typing.Tuple[float, float]) -> None:
+        """Set the position property in relative coordinates.
+
+        Position is a tuple of floats (y, x)."""
+        ...
+
+    @property
+    def region(self) -> "Graphic":
+        ...
+
+    @property
+    def size(self) -> typing.Tuple[float, float]:
+        """Return the size property in relative coordinates.
+
+        Size is a tuple of floats (height, width)."""
+        ...
+
+    @size.setter
+    def size(self, value: typing.Tuple[float, float]) -> None:
+        """Set the size property in relative coordinates.
+
+        Size is a tuple of floats (height, width)."""
+        ...
+
+    @property
+    def start(self) -> typing.Union[float, typing.Tuple[float, float]]:
+        """Return the start property in relative coordinates.
+
+        Start may be a float when graphic is an Interval or a tuple (y, x) when graphic is a Line."""
+        ...
+
+    @start.setter
+    def start(self, value: typing.Union[float, typing.Tuple[float, float]]) -> None:
+        """Set the end property in relative coordinates.
+
+        End may be a float when graphic is an Interval or a tuple (y, x) when graphic is a Line."""
+        ...
+
+    @property
+    def type(self) -> str:
+        """Return the region type property.
+
+        The region type is different from the preferred 'graphic_type' in that it is backwards compatible with older versions.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    @property
+    def vector(self) -> typing.Tuple[typing.Tuple[float, float], typing.Tuple[float, float]]:
+        """Return the vector property in relative coordinates.
+
+        Vector will be a tuple of tuples ((y_start, x_start), (y_end, x_end))."""
+        ...
+
+    @vector.setter
+    def vector(self, value: typing.Tuple[typing.Tuple[float, float], typing.Tuple[float, float]]) -> None:
+        """Set the vector property in relative coordinates.
+
+        Vector will be a tuple of tuples ((y_start, x_start), (y_end, x_end))."""
+        ...
+
+
+class DataItem:
+
+    def add_channel_region(self, position: float) -> Graphic:
+        ...
+
+    def add_ellipse_region(self, center_y: float, center_x: float, height: float, width: float) -> Graphic:
+        ...
+
+    def add_interval_region(self, start: float, end: float) -> Graphic:
+        ...
+
+    def add_line_region(self, start_y: float, start_x: float, end_y: float, end_x: float) -> Graphic:
+        ...
+
+    def add_point_region(self, y: float, x: float) -> Graphic:
+        """Add a point graphic to the data item.
+
+        :param x: The x coordinate, in relative units [0.0, 1.0]
+        :param y: The y coordinate, in relative units [0.0, 1.0]
+        :return: The :py:class:`nion.swift.Facade.Graphic` object that was added.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    def add_rectangle_region(self, center_y: float, center_x: float, height: float, width: float) -> Graphic:
+        ...
+
+    def remove_region(self, graphic: Graphic) -> None:
         ...
 
     def set_data(self, data: numpy.ndarray) -> None:
@@ -140,8 +325,11 @@ class DataItem:
 
     @property
     def data_and_metadata(self) -> DataAndMetadata.DataAndMetadata:
-        """Return the data and metadata object.
+        """Return the extended data.
 
+        Deprecated. Use xdata instead.
+
+        .. deprecated:: 1.1
         .. versionadded:: 1.0
 
         Scriptable: Yes
@@ -164,6 +352,24 @@ class DataItem:
 
     @property
     def display_xdata(self) -> DataAndMetadata.DataAndMetadata:
+        """Return the extended data of this data item display.
+
+        Display data will always be 1d or 2d and either int, float, or RGB data type.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    @property
+    def graphics(self) -> typing.List[Graphic]:
+        """Return the graphics attached to this data item.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
         ...
 
     @property
@@ -187,15 +393,36 @@ class DataItem:
         ...
 
     @property
-    def regions(self) -> typing.List[Region]:
+    def regions(self) -> typing.List[Graphic]:
+        """Return the graphics attached to this data item.
+
+        Deprecated. Use graphics accessor instead.
+
+        .. deprecated:: 1.1
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
         ...
 
     @property
     def xdata(self) -> DataAndMetadata.DataAndMetadata:
+        """Return the extended data of this data item.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
         ...
 
     @xdata.setter
     def xdata(self, value: DataAndMetadata.DataAndMetadata) -> None:
+        """Set the extended data of this data item.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
         ...
 
 
@@ -217,44 +444,12 @@ class DisplayPanel:
 
     @property
     def data_item(self) -> DataItem:
-        """Return the data item, if any, associated with this display panel.
+        """Return the data item associated with this display panel.
 
         .. versionadded:: 1.0
 
         Scriptable: Yes
         """
-        ...
-
-
-class Graphic:
-
-    def get_property(self, property: str):
-        ...
-
-    def mask_xdata_with_shape(self, shape: typing.Sequence[int]) -> DataAndMetadata.DataAndMetadata:
-        ...
-
-    def set_property(self, property: str, value):
-        ...
-
-    @property
-    def graphic_id(self) -> str:
-        ...
-
-    @graphic_id.setter
-    def graphic_id(self, value: str) -> None:
-        ...
-
-    @property
-    def label(self) -> str:
-        ...
-
-    @label.setter
-    def label(self, value: str) -> None:
-        ...
-
-    @property
-    def region(self) -> Region:
         ...
 
 
@@ -295,118 +490,6 @@ class DataGroup:
 
         Scriptable: Yes
         """
-        ...
-
-
-class Instrument:
-    """Represents an instrument with controls and properties.
-
-    A control is part of a network of dependent properties where the output is the weighted sum of inputs with an added
-    value.
-
-    A property is a simple value with a specific type that can be set or read.
-
-    The instrument class provides the ability to have temporary states where changes to the instrument are recorded and
-    restored when finished. Calls to begin/end temporary state should be matched.
-
-    The class also provides the ability to group a set of operations and have them be applied together. Calls to
-    begin/end transaction should be matched.
-    """
-
-    def close(self) -> None:
-        ...
-
-    def get_control_output(self, name: str) -> float:
-        """Return the value of a control.
-
-        :return: The control value.
-
-        Raises exception if control with name doesn't exist.
-
-        .. versionadded:: 1.0
-
-        Scriptable: Yes
-        """
-        ...
-
-    def get_control_state(self, name: str) -> str:
-        ...
-
-    def get_property_as_bool(self, name: str) -> bool:
-        ...
-
-    def get_property_as_float(self, name: str) -> float:
-        """Return the value of a float property.
-
-        :return: The property value (float).
-
-        Raises exception if property with name doesn't exist.
-
-        .. versionadded:: 1.0
-
-        Scriptable: Yes
-        """
-        ...
-
-    def get_property_as_float_point(self, name: str) -> Geometry.FloatPoint:
-        ...
-
-    def get_property_as_int(self, name: str) -> int:
-        ...
-
-    def get_property_as_str(self, name: str) -> str:
-        ...
-
-    def set_control_output(self, name: str, value: float, options: dict=None) -> None:
-        """Set the value of a control asynchronously.
-
-        :param name: The name of the control (string).
-        :param value: The control value (float).
-        :param options: A dict of custom options to pass to the instrument for setting the value.
-
-        Options are:
-            value_type: local, delta, output. output is default.
-            confirm, confirm_tolerance_factor, confirm_timeout: confirm value gets set.
-            inform: True to keep dependent control outputs constant by adjusting their internal values. False is
-            default.
-
-        Default value of confirm is False. Default confirm_tolerance_factor is 0.02. Default confirm_timeout is 16.0
-        (seconds).
-
-        Raises exception if control with name doesn't exist.
-
-        Raises TimeoutException if confirm is True and timeout occurs.
-
-        .. versionadded:: 1.0
-
-        Scriptable: Yes
-        """
-        ...
-
-    def set_property_as_bool(self, name: str, value: bool) -> None:
-        ...
-
-    def set_property_as_float(self, name: str, value: float) -> None:
-        """Set the value of a float property.
-
-        :param name: The name of the property (string).
-        :param value: The property value (float).
-
-        Raises exception if property with name doesn't exist.
-
-        .. versionadded:: 1.0
-
-        Scriptable: Yes
-        """
-        ...
-
-    def set_property_as_float_point(self, name: str, value: Geometry.FloatPoint) -> None:
-        ...
-
-    def set_property_as_int(self, name: str, value: int) -> None:
-        ...
-
-    def set_property_as_str(self, name: str, value: str) -> None:
         ...
 
 

@@ -404,6 +404,26 @@ class DataItem:
         ...
 
     @property
+    def title(self) -> str:
+        """Return the title as a string.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    @title.setter
+    def title(self, value: str) -> None:
+        """Set the title to a string.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    @property
     def xdata(self) -> DataAndMetadata.DataAndMetadata:
         """Return the extended data of this data item.
 

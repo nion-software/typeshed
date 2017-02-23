@@ -1,5 +1,7 @@
+import datetime
 import numpy
 import typing
+import uuid
 from nion.data import Calibration
 from nion.data import DataAndMetadata
 from nion.utils import Geometry
@@ -197,6 +199,16 @@ class Graphic:
         ...
 
     @property
+    def uuid(self) -> uuid.UUID:
+        """Return the uuid of this object.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    @property
     def vector(self) -> typing.Tuple[typing.Tuple[float, float], typing.Tuple[float, float]]:
         """Return the vector property in relative coordinates.
 
@@ -239,6 +251,51 @@ class DataItem:
         ...
 
     def add_rectangle_region(self, center_y: float, center_x: float, height: float, width: float) -> Graphic:
+        ...
+
+    def get_metadata_value(self, key: str) -> typing.Any:
+        """Get the metadata value for the given key.
+
+        There are a set of predefined keys that, when used, will be type checked and be interoperable with other
+        applications. Please consult reference documentation for valid keys.
+
+        If using a custom key, we recommend structuring your keys in the '<group>.<attribute>' format followed
+        by the predefined keys. e.g. 'session.instrument' or 'camera.binning'.
+
+        Also note that some predefined keys map to the metadata ``dict`` but others do not. For this reason, prefer
+        using the ``metadata_value`` methods over directly accessing ``metadata``.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    def has_metadata_value(self, key: str) -> bool:
+        """Return whether the metadata value for the given key exists.
+
+        There are a set of predefined keys that, when used, will be type checked and be interoperable with other
+        applications. Please consult reference documentation for valid keys.
+
+        If using a custom key, we recommend structuring your keys in the '<group>.<attribute>' format followed
+        by the predefined keys. e.g. 'session.instrument' or 'camera.binning'.
+
+        Also note that some predefined keys map to the metadata ``dict`` but others do not. For this reason, prefer
+        using the ``metadata_value`` methods over directly accessing ``metadata``.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    def mask_xdata(self) -> DataAndMetadata.DataAndMetadata:
+        """Return the mask by combining any mask graphics on this data item as extended data.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
         ...
 
     def remove_region(self, graphic: Graphic) -> None:
@@ -289,11 +346,42 @@ class DataItem:
         ...
 
     def set_metadata(self, metadata: dict) -> None:
-        """Set the metadata.
+        """Set the metadata dict.
 
         :param metadata: The metadata dict.
 
         The metadata dict must be convertible to JSON, e.g. ``json.dumps(metadata)`` must succeed.
+
+        For best future compatibility, prefer using the ``get_metadata_value`` and ``set_metadata_value`` methods over
+        directly accessing ``metadata``.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    def set_metadata_value(self, key: str, value: typing.Any) -> None:
+        """Set the metadata value for the given key.
+
+        There are a set of predefined keys that, when used, will be type checked and be interoperable with other
+        applications. Please consult reference documentation for valid keys.
+
+        If using a custom key, we recommend structuring your keys in the '<group>.<attribute>' format followed
+        by the predefined keys. e.g. 'session.instrument' or 'camera.binning'.
+
+        Also note that some predefined keys map to the metadata ``dict`` but others do not. For this reason, prefer
+        using the ``metadata_value`` methods over directly accessing ``metadata``.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    @property
+    def created(self) -> datetime.datetime:
+        """Return the created timestamp (UTC) as a datetime object.
 
         .. versionadded:: 1.0
 
@@ -385,6 +473,19 @@ class DataItem:
     def metadata(self) -> dict:
         """Return a copy of the metadata as a dict.
 
+        For best future compatibility, prefer using the ``get_metadata_value`` and ``set_metadata_value`` methods over
+        directly accessing ``metadata``.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    @property
+    def modified(self) -> datetime.datetime:
+        """Return the modified timestamp (UTC) as a datetime object.
+
         .. versionadded:: 1.0
 
         Scriptable: Yes
@@ -416,6 +517,16 @@ class DataItem:
     @title.setter
     def title(self, value: str) -> None:
         """Set the title to a string.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    @property
+    def uuid(self) -> uuid.UUID:
+        """Return the uuid of this object.
 
         .. versionadded:: 1.0
 
@@ -496,6 +607,16 @@ class Display:
     def selected_graphics(self) -> typing.List[Graphic]:
         ...
 
+    @property
+    def uuid(self) -> uuid.UUID:
+        """Return the uuid of this object.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
 
 class DataGroup:
 
@@ -510,8 +631,27 @@ class DataGroup:
         """
         ...
 
+    @property
+    def uuid(self) -> uuid.UUID:
+        """Return the uuid of this object.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
 
 class Library:
+
+    def copy_data_item(self, data_item: DataItem) -> DataItem:
+        """Copy a data item.
+
+        .. versionadded:: 1.0
+
+        Scriptable: No
+        """
+        ...
 
     def create_data_item(self, title: str=None) -> DataItem:
         """Create an empty data item in the library.
@@ -528,10 +668,6 @@ class Library:
 
     def create_data_item_from_data(self, data: numpy.ndarray, title: str=None) -> DataItem:
         """Create a data item in the library from an ndarray.
-
-        For efficiency, this method will directly use the data object without copying it. This means that the data
-        should be considered to be owned by the library once this call is made. Changing the data outside of this API
-        will result in undefined behavior.
 
         The data for the data item will be written to disk immediately and unloaded from memory. If you wish to delay
         writing to disk and keep using the data, create an empty data item and use the data item methods to modify
@@ -551,10 +687,6 @@ class Library:
     def create_data_item_from_data_and_metadata(self, data_and_metadata: DataAndMetadata.DataAndMetadata, title: str=None) -> DataItem:
         """Create a data item in the library from a data and metadata object.
 
-        For efficiency, this method will directly use the data within the data_and_metadata object without copying
-        it. This means that the data should be considered to be owned by the library once this call is made. Changing
-        the data outside of this API will result in undefined behavior.
-
         The data for the data item will be written to disk immediately and unloaded from memory. If you wish to delay
         writing to disk and keep using the data, create an empty data item and use the data item methods to modify
         the data.
@@ -573,7 +705,18 @@ class Library:
     def data_ref_for_data_item(self, data_item: DataItem):
         ...
 
-    def get_data_item_by_uuid(self, data_item_uuid: type) -> DataItem:
+    def delete_library_value(self, key: str) -> None:
+        """Delete the library value for the given key.
+
+        Please consult the developer documentation for a list of valid keys.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    def get_data_item_by_uuid(self, data_item_uuid: uuid.UUID) -> DataItem:
         """Get the data item with the given UUID.
 
         .. versionadded:: 1.0
@@ -583,7 +726,7 @@ class Library:
         """
         ...
 
-    def get_data_item_for_hardware_source(self, hardware_source, channel_id: str=None, processor_id: str=None, create_if_needed: bool=False) -> DataItem:
+    def get_data_item_for_hardware_source(self, hardware_source, channel_id: str=None, processor_id: str=None, create_if_needed: bool=False, large_format: bool=False) -> DataItem:
         """Get the data item associated with hardware source and (optional) channel id and processor_id. Optionally create if missing.
 
         :param hardware_source: The hardware_source.
@@ -599,12 +742,34 @@ class Library:
         """
         ...
 
-    def get_graphic_by_uuid(self, graphic_uuid: type) -> Graphic:
+    def get_dependent_data_items(self, data_item: DataItem) -> typing.List[DataItem]:
+        """Return the dependent data items the data item argument.
+
+        :return: The list of :py:class:`nion.swift.Facade.DataItem` objects.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    def get_graphic_by_uuid(self, graphic_uuid: uuid.UUID) -> Graphic:
         """Get the graphic with the given UUID.
 
         .. versionadded:: 1.0
 
         Status: Provisional
+        Scriptable: Yes
+        """
+        ...
+
+    def get_library_value(self, key: str) -> typing.Any:
+        """Get the library value for the given key.
+
+        Please consult the developer documentation for a list of valid keys.
+
+        .. versionadded:: 1.0
+
         Scriptable: Yes
         """
         ...
@@ -619,6 +784,48 @@ class Library:
         .. versionadded:: 1.0
 
         Scriptable: Yes
+        """
+        ...
+
+    def get_source_data_items(self, data_item: DataItem) -> typing.List[DataItem]:
+        """Return the list of data items that are data sources for the data item.
+
+        :return: The list of :py:class:`nion.swift.Facade.DataItem` objects.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    def has_library_value(self, key: str) -> bool:
+        """Return whether the library value for the given key exists.
+
+        Please consult the developer documentation for a list of valid keys.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    def set_library_value(self, key: str, value: typing.Any) -> None:
+        """Set the library value for the given key.
+
+        Please consult the developer documentation for a list of valid keys.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    def snapshot_data_item(self, data_item: DataItem) -> DataItem:
+        """Snapshot a data item. Similar to copy but with a data snapshot.
+
+        .. versionadded:: 1.0
+
+        Scriptable: No
         """
         ...
 
@@ -639,6 +846,16 @@ class Library:
         """Return the list of data items.
 
         :return: The list of :py:class:`nion.swift.Facade.DataItem` objects.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
+    @property
+    def uuid(self) -> uuid.UUID:
+        """Return the uuid of this object.
 
         .. versionadded:: 1.0
 
@@ -810,7 +1027,7 @@ class API:
         """
         ...
 
-    def create_data_and_metadata(self, data: numpy.ndarray, intensity_calibration: Calibration.Calibration=None, dimensional_calibrations: typing.List[Calibration.Calibration]=None, metadata: dict=None, timestamp: str=None, data_descriptor: type=None) -> DataAndMetadata.DataAndMetadata:
+    def create_data_and_metadata(self, data: numpy.ndarray, intensity_calibration: Calibration.Calibration=None, dimensional_calibrations: typing.List[Calibration.Calibration]=None, metadata: dict=None, timestamp: str=None, data_descriptor: DataAndMetadata.DataDescriptor=None) -> DataAndMetadata.DataAndMetadata:
         """Create a data_and_metadata object from data.
 
         :param data: an ndarray of data.

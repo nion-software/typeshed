@@ -215,19 +215,19 @@ class HardwareSource:
     def set_frame_parameters_for_profile_by_index(self, profile_index: int, frame_parameters: dict) -> None:
         ...
 
-    def set_property_as_bool(self, name, value):
+    def set_property_as_bool(self, name, value) -> None:
         ...
 
-    def set_property_as_float(self, name, value):
+    def set_property_as_float(self, name, value) -> None:
         ...
 
-    def set_property_as_float_point(self, name, value):
+    def set_property_as_float_point(self, name, value) -> None:
         ...
 
-    def set_property_as_int(self, name, value):
+    def set_property_as_int(self, name, value) -> None:
         ...
 
-    def set_property_as_str(self, name, value):
+    def set_property_as_str(self, name, value) -> None:
         ...
 
     def start_playing(self, frame_parameters: dict=None, channels_enabled: typing.List[bool]=None) -> None:

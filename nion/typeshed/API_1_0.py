@@ -253,6 +253,24 @@ class DataItem:
     def add_rectangle_region(self, center_y: float, center_x: float, height: float, width: float) -> Graphic:
         ...
 
+    def delete_metadata_value(self, key: str) -> None:
+        """Delete the metadata value for the given key.
+
+        There are a set of predefined keys that, when used, will be type checked and be interoperable with other
+        applications. Please consult reference documentation for valid keys.
+
+        If using a custom key, we recommend structuring your keys in the '<dotted>.<group>.<attribute>' format followed
+        by the predefined keys. e.g. 'stem.session.instrument' or 'stm.camera.binning'.
+
+        Also note that some predefined keys map to the metadata ``dict`` but others do not. For this reason, prefer
+        using the ``metadata_value`` methods over directly accessing ``metadata``.
+
+        .. versionadded:: 1.0
+
+        Scriptable: Yes
+        """
+        ...
+
     def get_metadata_value(self, key: str) -> typing.Any:
         """Get the metadata value for the given key.
 
@@ -937,6 +955,19 @@ class DocumentWindow:
         ...
 
     def show_get_string_message_box(self, caption: str, text: str, accepted_fn, rejected_fn=None, accepted_text: str=None, rejected_text: str=None) -> None:
+        """Show a dialog box and ask for a string.
+
+        Caption describes the user prompt. Text is the initial/default string.
+
+        Accepted function must be a function taking one argument which is the resulting text if the user accepts the
+        message dialog. It will only be called if the user clicks OK.
+
+        Rejected function can be a function taking no arguments, called if the user clicks Cancel.
+
+        .. versionadded:: 1.0
+
+        Scriptable: No
+        """
         ...
 
     @property
